@@ -3,6 +3,7 @@ import express, { urlencoded } from "express";
 import  DbConnection  from "./db/index.js";
 import Dotenv  from "dotenv";
 import cookieParser from "cookie-parser";  // Used to perform CRUD opration on User Brower's cookie
+import cors from "cors";
 
 import AuthRoute from "./routes/auth.route.js"
 
@@ -14,6 +15,7 @@ app.use(express.json({limit:"16kb"}));
 app.use(urlencoded({extended:true,limit:'16kb'}));
 app.use(express.static("public"));
 app.use(cookieParser());
+app.use(cors());
 
 
 

@@ -7,7 +7,7 @@ const DbConnection = async ()=>{
 
     try {
         
-        const connected =  await mongoose.connect(`${process.env.MONGO_URL}/personal-finance`);
+        const connected =  await mongoose.connect(`${process.env.MONGO_URL}personal-finance`);
         console.log(`DB is connected! and on port ${connected.connection.port} `);
         
 

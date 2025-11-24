@@ -31,6 +31,9 @@ export const OtpGenrator = ()=>{
 // export const otp = OtpGenrator();
 
 export const OtpSender = async (toEmail, otp) => {
+
+    // console.log(process.env.EMAIL_ID + "  " + process.env.EMAIL_PASSKEY);
+    
     
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -55,12 +58,14 @@ export const OtpSender = async (toEmail, otp) => {
     `
   });
 
-  console.log(info);
+  // console.log(info);
   
   console.log('Message sent:', info.messageId);
+  return true;
       
     } catch (error) {
         console.log("error in otp sending "+error);
+        return false;
      
     }
   
