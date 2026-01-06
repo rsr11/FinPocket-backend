@@ -28,7 +28,10 @@ export const ProfileData = async (req,res)=>{
     try {
        
         const userId = req.user;
-        res.status(200).json({userId});
+        
+        const user = await User.findById(userId._id).select("-password -__v -createdAt -updatedAt");
+        res.status(200).json({user});
+
     } catch (error) {
         console.log(error);
         res.status(500).json({msg:"Server Error"}); 

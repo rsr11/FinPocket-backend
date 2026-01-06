@@ -4,16 +4,18 @@ import UserModel from "../models/User.model.js";
 import jsonwebtoken from "jsonwebtoken";
 import { CompareHashPass, PasswordHashing } from "../utils/passHash.utils.js";
 import { ProfileData, UserLogin, UserRegistration } from "../controllers/User.controller.js";
-import { userAuthentication } from "../middlewares/auth.middleware.js";
+import { userAuthentication, userValidation } from "../middlewares/auth.middleware.js";
+import { body } from "express-validator";
+import { LoginValidator, RegistrationValidator } from "../validator/User.validator.js";
 
 
 const route = express.Router();
 
 
 
-route.post('/registration',UserRegistration);
+route.post('/registration', RegistrationValidator, userValidation , UserRegistration);
 
-route.post("/login",UserLogin);
+route.post("/login",LoginValidator,userValidation,UserLogin);
 
 route.get('/profile', userAuthentication , ProfileData);
 

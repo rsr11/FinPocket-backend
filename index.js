@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";  // Used to perform CRUD opration on U
 import cors from "cors";
 
 import AuthRoute from "./routes/auth.route.js"
+import TransactionRoute from "./routes/transaction.route.js";
 
 Dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(cors());
 
 
 app.use("/finPocket/api/auth/",AuthRoute);
+app.use("/finPocket/api/transaction",TransactionRoute);
 // app.use("/finPocket/api/transaction")
 
 
