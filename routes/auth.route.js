@@ -3,74 +3,99 @@ import { OtpGenrator, OtpSender } from "../utils/otp.utils.js";
 import UserModel from "../models/User.model.js";
 import jsonwebtoken from "jsonwebtoken";
 import { CompareHashPass, PasswordHashing } from "../utils/passHash.utils.js";
+import { ProfileData, UserLogin, UserRegistration } from "../controllers/User.controller.js";
+import { userAuthentication } from "../middlewares/auth.middleware.js";
 
 
 const route = express.Router();
 
 
-// api for user Registration 
-route.post("/registerUser", async (req,res)=>{
-     
-  const user = req.body;
-  const UserPassword = user.password;
 
-  let hashPassworded = await PasswordHashing(UserPassword);
+route.post('/registration',UserRegistration);
 
-   console.log(
-   user.name + "This is for twesting purpose", hashPassworded
-  );
+route.post("/login",UserLogin);
 
-  if(hashPassworded){
+route.get('/profile', userAuthentication , ProfileData);
 
-  const data =   await UserModel.insertOne({
-      name:user.name,
-      email:user.email,
-      password:hashPassworded
-     });
-
-     console.log(data);
-      
-     if(data){
-        res.json({name:user.name, email:user.email, isUserDetailFilled: false, isLoggedIn:true});
-     }else{
-      res.status(404).send({mss:"erroer occursed"});
-     }
-
-
-  }else{
-   res.status(404).json({mssg:"error occured"});
-  }
   
-  });
+// api for user Registration  
+// route.post("/registerUser", async (req,res)=>{
+     
+//   const user = req.body;
+//   const UserPassword = user.password;
+
+//   let hashPassworded = await PasswordHashing(UserPassword);
+
+//    console.log(
+//    user.name + "This is for twesting purpose", hashPassworded
+//   );
+
+//   if(hashPassworded){
+
+//   const data =   await UserModel.insertOne({
+//       name:user.name,
+//       email:user.email,
+//       password:hashPassworded
+//      });
+
+//      console.log(data);
+      
+//      if(data){
+//         res.json({name:user.name, email:user.email, isUserDetailFilled: false, isLoggedIn:true});
+//      }else{
+//       res.status(404).send({mss:"erroer occursed"});
+//      }
+
+
+//   }else{
+//    res.status(404).json({mssg:"error occured"});
+//   }
+  
+//   });
+
+
+
 
 
 
 
   // for login purpose
-  route.post("/LoginUser", async(req,res)=>{
-       const email = req.body.email;
-       const inputPassword = req.body.password;
+//   route.post("/LoginUser", async(req,res)=>{
+//        const email = req.body.email;
+//        const inputPassword = req.body.password;
+
+//        console.log(email+ " " + inputPassword);
+       
+//       try {
+//          const isUserExist = await UserModel.find({'email':email});
+
+//       console.log(isUserExist);
       
-      const isUserExist = await UserModel.find({'email':email});
 
-         if(isUserExist.length > 0){
+//          if(isUserExist.length > 0){
          
-         const hashedPassword = isUserExist[0]?.password;
+//          const hashedPassword = isUserExist[0]?.password;
 
-         const isPasswordCorrect = await CompareHashPass(hashedPassword,inputPassword);
-         console.log(isPasswordCorrect);
+//          const isPasswordCorrect = await CompareHashPass(hashedPassword,inputPassword);
+//          console.log(isPasswordCorrect);
          
-         res.send({email,inputPassword,isUserExist});
+//          res.status(200).json({email,inputPassword,isUserExist});
+//          }else{
+//          res.status(404).json({"mssg":"User not found"});
          
-      }else{
-         res.status(404).send({"mssg":"User not found"});
+//       }
+//       } catch (error) {
+//          console.log(error);
          
-      }
+//       }
+      
+         
+      
       
        
 
 
-  })
+//   })
 
 
  
@@ -145,7 +170,7 @@ export default route;
 // testing purpose for authentication
 
 {
-   email:" test123@gmail.com"
+   email:"test123@gmail.com"
    password: "Testing2#123"
    
    email: "testing@gmail.com"
