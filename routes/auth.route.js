@@ -3,21 +3,26 @@ import { OtpGenrator, OtpSender } from "../utils/otp.utils.js";
 import UserModel from "../models/User.model.js";
 import jsonwebtoken from "jsonwebtoken";
 import { CompareHashPass, PasswordHashing } from "../utils/passHash.utils.js";
-import { ProfileData, UserLogin, UserRegistration } from "../controllers/User.controller.js";
-import { userAuthentication, userValidation } from "../middlewares/auth.middleware.js";
+import { ProfileData, UserLogin, UserLogOut, UserRegistration } from "../controllers/User.controller.js";
+import { userAuthentication } from "../middlewares/auth.middleware.js";
 import { body } from "express-validator";
 import { LoginValidator, RegistrationValidator } from "../validator/User.validator.js";
+import { dataValidator } from "../middlewares/validation.middleware.js";
 
 
 const route = express.Router();
 
 
 
-route.post('/registration', RegistrationValidator, userValidation , UserRegistration);
+route.post('/registration', RegistrationValidator, dataValidator , UserRegistration);
 
-route.post("/login",LoginValidator,userValidation,UserLogin);
+route.post("/login",LoginValidator,dataValidator,UserLogin);
+
+
 
 route.get('/profile', userAuthentication , ProfileData);
+
+route.get('/logout',userAuthentication,UserLogOut);
 
   
 // api for user Registration  

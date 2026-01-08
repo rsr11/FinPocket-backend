@@ -41,16 +41,19 @@ export const ProfileData = async (req,res)=>{
 export const UserLogin = async (req,res)=>{
     try {   
       const {email,password} = req.body;
+
+    //   console.log(email,password);
+      
         const userExist = await User.findOne({email}).select(`+password`);
 
-        if(!userExist) return res.status(401).json({msg:"Invalid credentials! 1"});
+        if(!userExist) return res.status(401).json({msg:"Invalid credentials! "});
 
         const isPasswordMatch = await userExist.comparePassword(password);
-        if(!isPasswordMatch) return res.status(401).json({msg:"Invalid credentials! 2"});
+        if(!isPasswordMatch) return res.status(401).json({msg:"Invalid credentials! "});
         const token = await userExist.generateJWT();
 
         res.status(200).cookie("token", token, {
-            httpOnly: true, secure:true, sameSite:'strict', maxAge: 24 * 60 * 60 * 1000}).json({name:userExist.name, email:userExist.email, token});
+            httpOnly: true, secure:false, sameSite:'lax', maxAge: 24 * 60 * 60 * 1000}).json({name:userExist.name, email:userExist.email, token});
 
     } 
     catch (error) {
@@ -58,3 +61,23 @@ export const UserLogin = async (req,res)=>{
         res.status(500).json({msg:"Server Error"}); 
     } 
  };
+
+
+ export const UserLogOut = async(req,res)=>{
+     
+     try {
+         const userId = req.user;
+        
+         const user = await User.findById(userId._id);
+         if(user){
+            res.clearCookie("token", {httpOnly: true,secure: true,sameSite: "strict"});
+            res.status(200).json({ msg: "Logged out" });
+         }else{
+            res.status(404).json({msg:"Server error"});
+         }
+
+        
+     } catch (error) {
+         res.status(404).json({msg:"Server error", error});
+     }
+ }

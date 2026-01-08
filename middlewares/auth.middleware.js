@@ -1,4 +1,3 @@
-import { validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
 
@@ -24,11 +23,3 @@ export const userAuthentication = async (req,res,next)=>{
 
 
 
-export const userValidation = (req,res,next)=>{
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        return res.status(400).json({errors:errors.array()});
-    };
-    next();
-
-};

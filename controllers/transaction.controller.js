@@ -19,7 +19,7 @@ export const transferMoney = async (req,res)=>{
         const transaction = new Transaction({
             user: userId._id, // Assuming req.user contains the user ID
             amountPaid,
-            date: date ? new Date(date) : new Date(), // Use provided date or current date
+            date:new Date(), // Use provided date or current date
             category
         });
 
