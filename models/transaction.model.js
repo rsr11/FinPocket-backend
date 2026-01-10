@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { transactionTypes } from "../constant/category.constant.js";
 
 const Transaction = new mongoose.Schema({
     user:{
@@ -9,7 +10,7 @@ const Transaction = new mongoose.Schema({
     date:Date,
     category:{
         type:String,
-        enum:['grocery','travel','heathcare','entertainment','shopping','rent/loan','education','other'],
+        enum: transactionTypes ,
         required:true
     },
 },{timestamps:true})
