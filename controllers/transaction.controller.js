@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { transactionTypes } from '../constant/category.constant.js';
 import Transaction from '../models/transaction.model.js';
 
@@ -53,11 +54,13 @@ export const categoryListing = async (req,res)=>{
 export const transactionSummary = async (req,res)=>{
     try {
         // Logic for transferring money between accounts
-        const userId = req.user;    
+        const userId = req.user;  
+        // const userName = await UserModel.findById(userId._id).select("name");
+
         const summary = await Transaction.aggregate([
-            { $match: { user: userId._id } },
+            { $match: { user: new mongoose.Types.ObjectId(userId._id) } },
             { $group: { _id: "$category", totalAmount: { $sum: "$amountPaid" } }},
-            { $project:{ category:"$_id", totalAmount:1, _id:0}}
+            { $project:{ totalAmount:1,category:"$_id", _id:0}}
        ]);
 
         res.status(200).json({msg:"transaction summary fetched successfully",data:summary});

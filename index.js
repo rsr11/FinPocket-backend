@@ -7,6 +7,7 @@ import cors from "cors";
 
 import AuthRoute from "./routes/auth.route.js"
 import TransactionRoute from "./routes/transaction.route.js";
+import AnalyticsRoute from "./routes/analytics.route.js";
 
 Dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(cors({origin:"http://localhost:5173",credentials:true}));
 
 app.use("/finPocket/api/auth/",AuthRoute);
 app.use("/finPocket/api/transaction",TransactionRoute);
+app.use("/finPocket/api/analytics",AnalyticsRoute);
 // app.use("/finPocket/api/transaction")
 
 
