@@ -51,23 +51,5 @@ export const categoryListing = async (req,res)=>{
 }
 
 
-export const transactionSummary = async (req,res)=>{
-    try {
-        // Logic for transferring money between accounts
-        const userId = req.user;  
-        // const userName = await UserModel.findById(userId._id).select("name");
 
-        const summary = await Transaction.aggregate([
-            { $match: { user: new mongoose.Types.ObjectId(userId._id) } },
-            { $group: { _id: "$category", totalAmount: { $sum: "$amountPaid" } }},
-            { $project:{ totalAmount:1,category:"$_id", _id:0}}
-       ]);
-
-        res.status(200).json({msg:"transaction summary fetched successfully",data:summary});
-
-    }catch(error){
-        console.error(error);
-        res.status(500).json({msg:"Server Error"});
-    }
-};
 

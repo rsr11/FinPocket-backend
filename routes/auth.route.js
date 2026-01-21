@@ -3,7 +3,7 @@ import { OtpGenrator, OtpSender } from "../utils/otp.utils.js";
 import UserModel from "../models/User.model.js";
 import jsonwebtoken from "jsonwebtoken";
 import { CompareHashPass, PasswordHashing } from "../utils/passHash.utils.js";
-import { ProfileData, UserLogin, UserLogOut, UserRegistration } from "../controllers/User.controller.js";
+import { GetUserData, ProfileData, UserLogin, UserLogOut, UserRegistration } from "../controllers/User.controller.js";
 import { userAuthentication } from "../middlewares/auth.middleware.js";
 import { body } from "express-validator";
 import { LoginValidator, RegistrationValidator } from "../validator/User.validator.js";
@@ -24,6 +24,7 @@ route.get('/profile', userAuthentication , ProfileData);
 
 route.get('/logout',userAuthentication,UserLogOut);
 
+route.get(`/get-user`,userAuthentication,GetUserData);
   
 // api for user Registration  
 // route.post("/registerUser", async (req,res)=>{

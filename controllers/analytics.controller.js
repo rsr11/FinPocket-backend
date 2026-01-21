@@ -26,6 +26,17 @@ export const transactionSummary = async (req,res)=>{
 
 
 
+const getLast10Days = () => {
+    const days = [];
+
+     for (let i = 9; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    days.push(d.toISOString().slice(0, 10)); // YYYY-MM-DD
+  }
+  return days;
+};
+
 
 export const Last10DayData = async (req, res) => {
     const userId = req.user;
@@ -38,7 +49,13 @@ export const Last10DayData = async (req, res) => {
               {$project:{ date:"$_id", totalAmount:1, _id:0 }}
             ]);
 
-        res.status(200).json({msg:"last 10 day data fetched successfully", data: TenDaysData });
+        const days = getLast10Days();
+
+       const finalData = days.map(day => {
+       const found = TenDaysData.find(r => r.date === day);
+        return { date: day, amount: found ? found.totalAmount : 0} });
+
+        res.status(200).json({msg:"last 10 day data fetched successfully", data: finalData });
 
     } catch (error) {
         res.status(500).json({msg:"Server Error",error: error.message});

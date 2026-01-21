@@ -1,3 +1,4 @@
+import UserModel from "../models/User.model.js";
 import User from "../models/User.model.js";
 import cookieParser from "cookie-parser";
 
@@ -37,6 +38,30 @@ export const ProfileData = async (req,res)=>{
         res.status(500).json({msg:"Server Error"}); 
     }
 };
+
+
+
+export const GetUserData = async (req,res)=>{
+  
+    try {
+        const userId = req.user;
+        const UserData = await UserModel.findById(userId);
+        
+        if(!UserData) return res.status(500).json({msg:"no data found"});
+
+        res.json({UserData});
+        
+        
+    } catch (error) {
+        return res.status(400).json({msg:"server error!"});
+    }
+
+
+}
+
+
+
+
 
 export const UserLogin = async (req,res)=>{
     try {   
@@ -80,4 +105,4 @@ export const UserLogin = async (req,res)=>{
      } catch (error) {
          res.status(404).json({msg:"Server error", error});
      }
- }
+ };
